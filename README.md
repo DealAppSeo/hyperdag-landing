@@ -31,7 +31,7 @@ Today the big models rank themselves and ask you to trust them. We build the opp
 4. **Speed** — cost in latency
 5. **Memory** — strength of context and recall
 
-*The thesis we aim to prove: the best model isn't the smartest — it's the most trustworthy per dollar.* Rankings are computed from real, ground-truthed evaluations and update as models change and new ones appear. Methodology is public by design — a leaderboard nobody can grade their own homework on.
+*The thesis we aim to prove: the best model isn't the smartest — it's the most trustworthy per dollar.* Rankings are computed from real, ground-truthed evaluations and update as models change and new ones appear. Methodology is public by design — a leaderboard nobody can grade their own homework on. **We rate every model by the same open method — our own components included. HyperDAG is a steward of an open standard, not its gatekeeper.**
 
 ---
 
@@ -69,7 +69,7 @@ flowchart TD
 
 The hardest questions here are not technical. **What *should* the Trust & Reputation Layer for Agentic AI be — and who should govern or control it?**
 
-The Trust Commons is an **open, protocol-agnostic** space for that debate — not a hub for any one project or ecosystem. Bring your own protocol, your critiques, your experiments, your resources. Builders, researchers, skeptics, and believers all welcome. If trust is going to be the infrastructure of the AI age, the people it serves should get to define it.
+The Trust Commons is an **open, protocol-agnostic** space for that debate — not a hub for any one project or ecosystem. **HyperDAG is one implementation among many**; competing designs — ERC-8004, other DID methods, entirely different scoring formulas, pure research — are first-class here. Bring your own protocol, your critiques, your experiments, your resources. Builders, researchers, skeptics, and believers all welcome. The goal is better *public* infrastructure and understanding, not loyalty to any one implementation. If trust is going to be the infrastructure of the AI age, the people it serves should get to define it.
 
 **→ [Open a discussion in the Trust Commons](https://github.com/DealAppSeo/trust-commons)**
 
