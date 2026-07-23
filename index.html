@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Trust Leaderboard — HyperDAG.org</title>
-<meta name="description" content="The people rank the models. An independent, calibrated AI trust leaderboard — Performance and Value lenses, computed from real evaluations. Powered by HyperDAG.org.">
+<title>HyperDAG Protocol — trust you can verify</title>
 <style>
   :root{
     --bg:#0e1012; --ink:#ecebe6; --soft:#9a958a; --line:#23262b; --card:#16191d;
@@ -15,84 +14,269 @@
   :root[data-theme="light"]{--bg:#f6f4ef;--ink:#17140f;--soft:#5a5449;--line:#e4dfd3;--card:#fdfcf9;--accent:#0e6f6e;--good:#1e7a46;--gold:#9a7b2e;}
   @media (prefers-color-scheme:light){:root:not([data-theme]){--bg:#f6f4ef;--ink:#17140f;--soft:#5a5449;--line:#e4dfd3;--card:#fdfcf9;--accent:#0e6f6e;--good:#1e7a46;--gold:#9a7b2e;}}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:720px;margin:0 auto;padding:0 24px}
-  h1{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-height:1.12;font-size:clamp(32px,5.5vw,52px);margin:0 0 14px;text-wrap:balance}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;text-wrap:balance;line-height:1.14}
   a{color:var(--accent)}
+  p{max-width:66ch}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
   .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
-  header{padding:84px 0 20px}
-  header p{color:var(--soft);font-size:19px;max-width:52ch;margin:0}
-  header p .it{font-family:var(--serif);font-style:italic;color:var(--ink)}
-  section{padding:26px 0}
-  #lb{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
-  .lb-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  small.fn{color:var(--soft);font-size:13px}
+  .it{font-family:var(--serif);font-style:italic;color:var(--ink)}
+  header{padding:100px 0 44px}
+  header h1{font-size:clamp(37px,6vw,64px);margin:0 0 22px}
+  header .lede{font-size:clamp(18px,2.3vw,23px);color:var(--soft);margin:0 0 14px;max-width:42ch}
+  header .lede.strong{color:var(--ink)}
+  section{padding:50px 0;border-top:1px solid var(--line)}
+  section h2{font-size:clamp(25px,3.4vw,35px);margin:0 0 8px}
+  section h3{font-size:19px;margin:26px 0 4px}
+  .sub{color:var(--soft);margin:2px 0 22px;font-size:18px}
+  .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+  .cta{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:13px;padding:11px 18px;border-radius:9px;background:var(--accent);color:#06110f;text-decoration:none;font-weight:600}
+  :root[data-theme="light"] .cta{color:#fff}
+  .ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:18px}
+  .cell{background:var(--card);padding:22px}
+  .cell h3{font-size:17px;margin:0 0 8px}
+  .cell p{font-size:14px;color:var(--soft);margin:0;line-height:1.55}
+  /* invitation cards */
+  .invite{display:grid;grid-template-columns:1fr;gap:2px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:10px}
+  .inv{background:var(--card);padding:24px;display:flex;gap:18px;align-items:flex-start;text-decoration:none;color:inherit}
+  .inv:hover{background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+  .inv .ico{font-size:22px;line-height:1}
+  .inv h3{margin:0 0 4px;font-size:18px}
+  .inv p{margin:0;font-size:14.5px;color:var(--soft)}
+  .inv .go{margin-left:auto;color:var(--accent);font-family:var(--mono);font-size:13px;align-self:center}
+  /* glass box svg */
+  figure{margin:22px 0 8px}
+  figcaption{color:var(--soft);font-size:13px;text-align:center;margin-top:10px;font-style:italic}
+  .boxwrap{width:100%;overflow-x:auto}
+  /* leaderboard */
+  #lb{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:22px 0}
   .lb-top .metric{font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em}
-  .lb-narr{color:var(--soft);font-size:15px;margin:8px 0 16px;line-height:1.55}
-  .tabs{display:inline-flex;gap:2px;background:var(--line);border-radius:9px;padding:2px;margin-bottom:14px}
-  .tab{border:0;background:transparent;color:var(--soft);font:inherit;font-size:14px;padding:7px 15px;border-radius:7px;cursor:pointer}
+  .lb-narr{color:var(--soft);font-size:14.5px;margin:8px 0 14px;line-height:1.55}
+  .tabs{display:inline-flex;gap:2px;background:var(--line);border-radius:9px;padding:2px;margin-bottom:12px}
+  .tab{border:0;background:transparent;color:var(--soft);font:inherit;font-size:13px;padding:6px 13px;border-radius:7px;cursor:pointer}
   .tab[aria-selected="true"]{background:var(--card);color:var(--ink);font-weight:600}
-  .tab small{color:var(--soft);font-weight:400}
-  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15.5px}
-  th,td{text-align:right;padding:9px 8px;border-bottom:1px solid var(--line)}
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
+  th,td{text-align:right;padding:8px;border-bottom:1px solid var(--line)}
   th:nth-child(2),td:nth-child(2){text-align:left}
   th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--soft);font-weight:500}
-  td:first-child{color:var(--soft);font-family:var(--mono);width:28px}
+  td:first-child{color:var(--soft);font-family:var(--mono);width:26px}
   tbody tr:first-child td:first-child{color:var(--gold);font-weight:700}
-  td .m{font-weight:600}
   .cls{font-family:var(--mono);font-size:10px;color:var(--soft);margin-left:6px}
   .free{color:var(--good)}
-  .disc{font-style:italic;color:var(--soft);font-size:12.5px;margin-top:14px;line-height:1.5}
-  .state{color:var(--soft);text-align:center;padding:30px}
-  .method{margin-top:26px;color:var(--soft);font-size:15px;line-height:1.6}
-  .method b{color:var(--ink)}
-  footer{padding:44px 0 72px;color:var(--soft);font-size:13.5px;border-top:1px solid var(--line);margin-top:32px}
-  footer a{font-weight:600}
+  .disc{font-style:italic;color:var(--soft);font-size:12px;margin-top:12px}
+  .state{color:var(--soft);text-align:center;padding:26px}
+  footer{padding:54px 0 82px;color:var(--soft);font-size:14px;border-top:1px solid var(--line)}
   footer .mono{font-family:var(--mono);font-size:12px}
   .toggle{position:fixed;top:16px;right:16px;background:var(--card);border:1px solid var(--line);color:var(--soft);border-radius:8px;padding:6px 10px;font-family:var(--mono);font-size:12px;cursor:pointer;z-index:10}
 </style>
 </head>
 <body>
+
+
 <button class="toggle" onclick="var r=document.documentElement,d=r.getAttribute('data-theme')==='light'?'dark':'light';r.setAttribute('data-theme',d)">◐ theme</button>
 
 <header><div class="wrap">
-  <p class="eyebrow">HyperDAG.org · The people rank the models</p>
-  <h1>AI Trust Leaderboard</h1>
-  <p>Today the big models rank themselves and ask you to trust them. We build the opposite — an <span class="it">independent, calibrated</span> ranking computed from real evaluations, on a method that's public by design.</p>
+  <p class="eyebrow">HyperDAG Protocol</p>
+  <h1>Trust is becoming the infrastructure of the AI age — the only question is whether you <span class="it">own yours, or they do.</span></h1>
+  <p class="lede">AI is being trusted with everything, and digital identity is coming — for people and their agents alike.</p>
+  <p class="lede strong">Do nothing, and governments and the AI oligarchy decide. Build the alternative, and it's yours — owned, controlled, and private — serving the people it measures, not the few who watch them.</p>
 </div></header>
 
 <section><div class="wrap">
+  <p class="eyebrow">What we believe</p>
+  <h2>AI is THE use case for blockchain.</h2>
+  <p>When autonomous agents start acting on our behalf — spending, deciding, speaking for us — they need a verifiable <b>chain of custody</b>: who did what, under whose authority, and whether it can be trusted. That is exactly what a blockchain is for. AI is the reason it finally matters — more than crypto, more than anything yet known. (We say "blockchain" because it's familiar; we mean DLT. A DAG is another kind — and a hybrid is, so far, the best fit.)</p>
+  <p>A chain-of-custody for people and agents is inevitable — the question is by whom, and on whose terms. <b>Top-down or self-sovereign.</b> One future has identity imposed by an AI oligarchy that can't help but placate the incumbents who fund it. The other is private, permissionless, and owned by the people — who set the weights and the values through their own agents. Safe and ethical AI is achievable, but only when the people, not a captured regulator, set what "safe" and "ethical" mean. It's only zero-sum if we let it be — we build positive-sum, for the good of all.</p>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">Flip the script</p>
+  <h2>The people rank the models.</h2>
+  <p class="sub">Today the big models rank themselves and ask you to trust them. We're building the opposite: people and their agents rank the models — think Yelp, a credit score, and a Better Business Bureau in one, by the masses for the masses, while your data stays in your control.</p>
+  <p style="color:var(--soft);font-size:15px;margin-bottom:6px">We don't reduce a model to one number. Like blood pressure — 120 over 80 says what neither figure says alone — trust reads truer in more than one dimension, and the signal is in how they relate. The engine behind it — HAL — has already run <span id="halnum" class="num" style="color:var(--ink)">147,595</span> real fact-checks <span style="color:var(--soft);font-size:12px">(live)</span>. Today the board ranks <b style="color:var(--ink)">truthfulness</b> — accuracy under fact-check, scored so <span class="it">confidently wrong</span> costs more than honest doubt — with <b style="color:var(--ink)">cost</b> beside it as a reference: real value per dollar, and an honest check on whether the newest, priciest models are actually worth it for everyday work. <b style="color:var(--ink)">So far</b> this measures <span class="num">code-review discrimination</span> — one narrow proxy, honestly labeled — and we're broadening toward general trustworthiness. A leaderboard nobody, including us, can grade their own homework on.</p>
   <div id="lb"><div class="state">Loading the live leaderboard…</div></div>
-  <div class="method">
-    <p><b>How to read it.</b> Two lenses on the same data. <b>Performance</b> ranks purely by calibration (who's most accurate, money no object). <b>Value</b> weights accuracy, speed, and cost — the best trustworthy answer per dollar. Often they disagree: the most accurate model and the best-value model are rarely the same one.</p>
-    <p><b>What "Brier" means.</b> Each model answers with a confidence; we score it against known ground truth with a proper scoring rule, so being <em>confidently wrong</em> costs far more than admitting uncertainty. Lower Brier = better-calibrated.</p>
-    <p><b>Honest scope.</b> This currently measures <span class="num">code-review discrimination</span> — one narrow proxy — not general trustworthiness. Early data, small samples, rough cost estimates. It's a hypothesis we <em>want</em> attacked: <a href="https://github.com/DealAppSeo/trust-commons">tear it apart in the Trust Commons</a>.</p>
+  <p style="color:var(--soft);font-size:15px;margin-top:18px"><b style="color:var(--ink)">The lens we're building: defensibility × discernment.</b> <b style="color:var(--ink)">Defensibility</b> — do your own claims survive when others check them? <b style="color:var(--ink)">Discernment</b> — are you right when you check <span class="it">theirs</span>? Producing truth and detecting it are different skills. You don't ask the doctor to diagnose themselves, or the thief to guard the cash — so an agent's standing shouldn't rest on its own word. Where an agent sits in that relationship tells you how to <b style="color:var(--ink)">use</b> it, and <b style="color:var(--ink)">when to trust</b> it — not just how to rank it. And it's hard to fake both at once, from independent sources. That's the point. The peer-verification behind it — <b style="color:var(--ink)">140,000 checks and counting</b> — is already flowing.</p>
+  <p style="color:var(--soft);font-size:15px;margin-top:14px">Beyond anything a board can measure from the outside is <b style="color:var(--ink)">perceived</b> trust — what the people and agents who actually use a model report. We're only starting to collect that (join us below), and where measured and perceived <span class="it">disagree</span> is the most revealing signal of all.</p>
+  <p style="color:var(--soft);font-size:15px;margin-top:14px"><b style="color:var(--ink)">Built against Goodhart's law.</b> <span class="it">When a measure becomes a target, it gets gamed.</span> So no single number rules here: decorrelated validators that never grade their own family, a proper scoring rule, and — soon — the independent judgment of real users. Gaming one signal is easy; gaming all of them, from independent sources, is the hard problem we build on. This is our best indicator so far. <a href="https://github.com/DealAppSeo/trust-commons"><b>Help us improve it, break it, or make it →</b></a></p>
+
+  <h3>Own and monetize your data</h3>
+  <p>Today's gatekeepers monetize the content you create for free. Flip it. Keep your data private (only you), or depersonalize it — zero-knowledge proofs plus depersonalization strip out the personal information, then you monetize what remains. Those who want access must prove who they are, and pay for what they currently take for free. Opt-in, always; a right to privacy sits at the core, not bolted on.</p>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">The tech thesis</p>
+  <h2>Glass box, not black box.</h2>
+  <p class="sub">We can't show you <em>why</em> a model thinks what it thinks — no one honestly can. But we can show you exactly <em>what it did</em>: every action visible, measurable, and traceable. Trust delivered as evidence, not asserted as a claim.</p>
+
+  <figure>
+    <div class="boxwrap"><svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" aria-label="Black box versus glass box comparison">
+      <defs>
+        <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker>
+      </defs>
+      <g fill="none" stroke="currentColor" color="var(--soft)" stroke-width="1.5">
+        <!-- black box -->
+        <text x="150" y="30" fill="var(--soft)" stroke="none" font-family="var(--mono)" font-size="12" text-anchor="middle" letter-spacing="1">BLACK BOX · "trust me"</text>
+        <line x1="20" y1="120" x2="70" y2="120" marker-end="url(#ar)"/>
+        <rect x="72" y="70" width="156" height="100" rx="8" fill="#0a0c0e" stroke="var(--line)"/>
+        <text x="150" y="128" fill="#5a5f66" stroke="none" font-family="var(--serif)" font-size="40" text-anchor="middle">?</text>
+        <line x1="230" y1="120" x2="280" y2="120" marker-end="url(#ar)"/>
+        <text x="150" y="200" fill="var(--soft)" stroke="none" font-size="12.5" text-anchor="middle">output you must take on faith</text>
+      </g>
+      <g fill="none" color="var(--accent)">
+        <!-- glass box -->
+        <text x="480" y="30" fill="var(--accent)" stroke="none" font-family="var(--mono)" font-size="12" text-anchor="middle" letter-spacing="1">GLASS BOX · "here's what it did"</text>
+        <line x1="352" y1="120" x2="402" y2="120" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <rect x="404" y="60" width="156" height="120" rx="8" fill="color-mix(in srgb, var(--accent) 8%, transparent)" stroke="currentColor" stroke-width="1.5"/>
+        <g stroke="none" font-family="var(--mono)" font-size="10.5" fill="var(--ink)">
+          <text x="416" y="82">✓ fact-checked</text>
+          <text x="416" y="102">✓ validators agree</text>
+          <text x="416" y="122">✓ signed &amp; timed</text>
+          <text x="416" y="142">✓ RepID delta logged</text>
+          <text x="416" y="162">✓ anchored on-chain</text>
+        </g>
+        <line x1="562" y1="120" x2="612" y2="120" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+        <text x="480" y="200" fill="var(--accent)" stroke="none" font-size="12.5" text-anchor="middle">output you can verify</text>
+      </g>
+    </svg></div>
+    <figcaption>Same input, same output — but one you have to trust, and one you can check: a verifiable <b style="color:var(--ink)">chain of custody</b> for every claim, from action to on-chain <b style="color:var(--ink)">provenance</b>.</figcaption>
+  </figure>
+
+  <div class="grid">
+    <div class="cell"><h3>Hybrid DAG + Blockchain</h3><p>A directed-acyclic-graph fabric for the throughput agents need, anchored to a blockchain for settlement and finality. Fast where it should be fast; immutable where it must be.</p></div>
+    <div class="cell"><h3>Zero-Knowledge Proofs</h3><p>Prove who you are, what you're allowed to do, and what you did — without exposing the underlying data. Self-sovereignty isn't a slogan; it's the cryptography.</p></div>
+    <div class="cell"><h3>Earned RepID</h3><p>A portable, behavioral reputation that agents and people accrue through what they actually do. Reputation you carry, not a score handed down by a platform. Earned, not granted.</p></div>
+    <div class="cell"><h3>HAL (Hallucination Assessment Layer)</h3><p>A quorum of independent, decorrelated validators fact-checks each claim. We never let models from the same family grade each other's work — same family, same blind spots — so a flaw one misses is caught by another that fails differently.</p></div>
+    <div class="cell"><h3>Adaptive Routing (ANFIS + LASSO)</h3><p>Every verification is routed to the validators most likely to catch its kind of error. An adaptive neuro-fuzzy system with LASSO feature-selection learns which models catch which failures — tuning accuracy per dollar in real time.</p></div>
+    <div class="cell"><h3>Self-Learning, Self-Healing</h3><p>The system improves from stress. Rotating red-teams probe it, disclosed-and-repaired errors earn credit, and recurring mistakes decay toward zero reward — so attack and error make it more reliable, not less. Antifragile by design.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">What we're building</p>
+  <h2>A trust layer for AI — safe, ethical, and democratized, for all.</h2>
+  <p>A tunable <b>trust harness</b> where agents, and the people behind them, rate one another <span class="it">and</span> the models that feed them, first-hand. In an agentic world, performance alone isn't enough — <b>reputation</b> is, earned through both self-review and the scrutiny of peers. We're trying to give raw intelligence what it lacks on its own: common sense, street smarts, the instinct to sense when something's off — and, over time, <span class="it">wisdom</span>. That takes character, dignity, and a moral compass — and those come not from the model, but from a higher source and the people it's built to serve: the last, the lost, and the least.</p>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">Get involved</p>
+  <h2>The code is the front door.</h2>
+  <p class="sub">A movement, not a company — an open protocol anyone can read, run, challenge, and build on.</p>
+  <div class="invite">
+    <a class="inv" href="https://github.com/DealAppSeo/hyperdag-protocol">
+      <span class="ico">⚙️</span>
+      <div><h3>Read the protocol on GitHub</h3><p>ZKP circuits, contracts, and the published methodology. Read it, run it, and help improve it.</p></div>
+      <span class="go">→</span>
+    </a>
+    <a class="inv" href="https://github.com/DealAppSeo/trust-commons">
+      <span class="ico">🧮</span>
+      <div><h3>Shape the Reputation Matrix</h3><p>Join the conversation on <b>what formulas should make up the best reputation matrix</b> — the weights, the scoring rules, who governs them. Open, protocol-agnostic, in the Trust Commons.</p></div>
+      <span class="go">→</span>
+    </a>
+  </div>
+  <p class="sub" style="margin-top:22px">Or help build the half that can't be measured from the outside — <b style="color:var(--ink)">perceived trust.</b> We believe, and so do the models themselves, that reputation and user satisfaction are part of trust <span class="it">achieved</span> — not all of it, but a meaningful part, and we're working to quantify it. Try the live HAL demo and rate a few AI answers at <a href="https://trustchat.dev">TrustChat.dev</a> — the rating layer is being wired now, and your calls help train it. Building something similar? Tell us — let's build safe, ethical AI together.</p>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">Why now</p>
+  <h2>The custody question is being decided <span class="it">now.</span></h2>
+  <p>Agents are already transacting; identity frameworks for AI are already being drafted — in legislatures, standards bodies, and the boardrooms of a handful of labs. Whatever gets built first becomes the default, and defaults are hard to unseat — and whoever lays the rails decides who is <b>accountable</b>, and whose <b>provenance</b> is trusted. The window to build the alternative — private, owned by the people, its chain of custody proven with zero-knowledge — is open now and won't stay open. That's why this is an open protocol, not a closed product. <span class="it">This is a direction we're building toward — a vision, honestly stated, not a finished product.</span></p>
+
+  <h2 style="margin-top:36px">Join us where you're most valuable.</h2>
+  <p class="sub">Come read the code, weigh in on the formulas, or just watch the build.</p>
+  <!-- TODO(Sean/DNS): point "Learn more" at the full manifesto+glossary site's new home
+       (e.g. learn.hyperdag.org) before repointing hyperdag.org to this page. -->
+  <p style="margin:2px 0 4px"><a href="https://learn.hyperdag.org">New here? Learn more — the full thesis, glossary, and architecture →</a></p>
+  <div class="ctas">
+    <a class="cta" href="https://github.com/DealAppSeo/hyperdag-protocol">Read the code →</a>
+    <a class="cta ghost" href="https://github.com/DealAppSeo/trust-commons">Join the conversation</a>
+    <a class="cta ghost" href="https://trustshell.dev">Try TrustShell.dev — our first free product</a>
+  </div>
+
+  <div style="margin-top:36px;max-width:460px">
+    <h3 style="font-size:18px;margin:0 0 4px">Follow the build.</h3>
+    <p style="color:var(--soft);font-size:14.5px;margin:0 0 12px">Just the occasional update as the protocol takes shape — no spam, no selling your address.</p>
+    <form id="subform" style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="subemail" type="email" required autocomplete="email" placeholder="you@example.com" aria-label="Email address" style="flex:1;min-width:200px;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:11px 14px;font:inherit;font-size:15px">
+      <button class="cta" type="submit" style="border:0;cursor:pointer">Keep me posted</button>
+    </form>
+    <p id="submsg" role="status" style="color:var(--soft);font-size:13.5px;margin:10px 0 0;min-height:1.2em"></p>
   </div>
 </div></section>
 
 <footer><div class="wrap">
-  <a href="https://hyperdag.org">← HyperDAG.org</a> &nbsp;·&nbsp; <a href="https://github.com/DealAppSeo/hyperdag-protocol">Read the protocol</a> &nbsp;·&nbsp; <a href="https://github.com/DealAppSeo/trust-commons">Trust Commons</a><br>
-  <span class="mono">A leaderboard nobody, including us, can grade their own homework on. · Micah 6:8</span>
+  HyperDAG Protocol · An open movement for self-sovereign trust · For the good of all — the last, the lost, and the least.<br>
+  <span class="mono">"Do justice, love mercy, walk humbly." — Micah 6:8</span>
 </div></footer>
 
 <script>
 (function(){
   var API='https://repid-engine-production.up.railway.app/api/v1/leaderboard/models';
+  var EMBED={"metric":"code-review discrimination (Brier-calibrated)","disclaimer":"Single-shot base API, default settings — not multi-agent products or scaffolding. So far a narrow proxy (code-review discrimination) we're broadening toward general trustworthiness. Early results; N=42; methodology is public and invites red-team.","narrative":"On code-review discrimination (Brier-calibrated): gpt-4o currently leads on both accuracy and value — though the two usually diverge. The newest frontier model is often not the most trustworthy — free Llama-3.3-70b out-calibrates several paid flagships here, and the reasoning-heavy models rank lower because they over-flag clean code with high confidence.","lenses":{"performance":{"models":[{"rank":1,"model_id":"gpt-4o","class":"frontier","accuracy":0.98,"brier":0.023,"latency_ms":591,"cost_per_1m":5},{"rank":2,"model_id":"claude-opus-4.8","class":"frontier","accuracy":0.95,"brier":0.045,"latency_ms":1380,"cost_per_1m":30},{"rank":3,"model_id":"claude-fable-5","class":"frontier","accuracy":0.91,"brier":0.06,"latency_ms":4211,"cost_per_1m":15},{"rank":4,"model_id":"llama-3.3-70b","class":"open-free","accuracy":0.9,"brier":0.078,"latency_ms":251,"cost_per_1m":0},{"rank":5,"model_id":"claude-sonnet-5","class":"frontier","accuracy":0.88,"brier":0.08,"latency_ms":1250,"cost_per_1m":9},{"rank":6,"model_id":"qwen3.7-max","class":"open","accuracy":0.88,"brier":0.089,"latency_ms":8176,"cost_per_1m":2},{"rank":7,"model_id":"claude-haiku","class":"frontier","accuracy":0.83,"brier":0.116,"latency_ms":1435,"cost_per_1m":1.5},{"rank":8,"model_id":"grok-4","class":"frontier","accuracy":0.74,"brier":0.142,"latency_ms":5784,"cost_per_1m":5},{"rank":9,"model_id":"gpt-5","class":"frontier","accuracy":0.76,"brier":0.143,"latency_ms":5303,"cost_per_1m":12},{"rank":10,"model_id":"gpt-oss-120b","class":"open-free","accuracy":0.76,"brier":0.146,"latency_ms":304,"cost_per_1m":0}]},"value":{"models":[{"rank":1,"model_id":"gpt-4o","class":"frontier","accuracy":0.98,"brier":0.023,"latency_ms":591,"cost_per_1m":5},{"rank":2,"model_id":"llama-3.3-70b","class":"open-free","accuracy":0.9,"brier":0.078,"latency_ms":251,"cost_per_1m":0},{"rank":3,"model_id":"claude-sonnet-5","class":"frontier","accuracy":0.88,"brier":0.08,"latency_ms":1250,"cost_per_1m":9},{"rank":4,"model_id":"claude-haiku","class":"frontier","accuracy":0.83,"brier":0.116,"latency_ms":1435,"cost_per_1m":1.5},{"rank":5,"model_id":"gpt-oss-120b","class":"open-free","accuracy":0.76,"brier":0.146,"latency_ms":304,"cost_per_1m":0},{"rank":6,"model_id":"claude-fable-5","class":"frontier","accuracy":0.91,"brier":0.06,"latency_ms":4211,"cost_per_1m":15},{"rank":7,"model_id":"claude-opus-4.8","class":"frontier","accuracy":0.95,"brier":0.045,"latency_ms":1380,"cost_per_1m":30},{"rank":8,"model_id":"deepseek-chat","class":"open","accuracy":0.81,"brier":0.175,"latency_ms":847,"cost_per_1m":0.5},{"rank":9,"model_id":"qwen3.7-max","class":"open","accuracy":0.88,"brier":0.089,"latency_ms":8176,"cost_per_1m":2},{"rank":10,"model_id":"grok-4","class":"frontier","accuracy":0.74,"brier":0.142,"latency_ms":5784,"cost_per_1m":5}]}}};
   var el=document.getElementById('lb'),state='performance',data=null;
   function fmt(n,d){return (n===null||n===undefined)?'—':Number(n).toFixed(d);}
   function render(){
-    if(!data){el.innerHTML='<div class="state">Leaderboard unavailable right now — check back shortly.</div>';return;}
+    if(!data){el.innerHTML='<div class="state">Leaderboard unavailable right now.</div>';return;}
     var lens=data.lenses[state],rows=(lens.models||[]).slice(0,10);
     var body=rows.map(function(r){var free=Number(r.cost_per_1m)===0;
-      return '<tr><td>'+r.rank+'</td><td><span class="m">'+r.model_id+'</span><span class="cls'+(free?' free':'')+'">'+(r.class||'')+(free?' · free':'')+'</span></td><td>'+fmt(r.accuracy,2)+'</td><td>'+fmt(r.brier,3)+'</td><td>'+(r.latency_ms||'—')+'ms</td><td>$'+fmt(r.cost_per_1m,1)+'</td></tr>';}).join('');
+      return '<tr><td>'+r.rank+'</td><td><b>'+r.model_id+'</b><span class="cls'+(free?' free':'')+'">'+(r.class||'')+(free?' · free':'')+'</span></td><td>'+fmt(r.accuracy,2)+'</td><td>'+fmt(r.brier,3)+'</td><td>'+(r.latency_ms||'—')+'ms</td><td>$'+fmt(r.cost_per_1m,1)+'</td></tr>';}).join('');
     el.innerHTML='<div class="lb-top"><span class="metric">'+data.metric+'</span></div><p class="lb-narr">'+data.narrative+'</p>'+
       '<div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="'+(state==='performance')+'" data-l="performance">Performance <small>(money no object)</small></button><button class="tab" role="tab" aria-selected="'+(state==='value')+'" data-l="value">Value <small>(per dollar)</small></button></div>'+
       '<table><thead><tr><th>#</th><th>Model</th><th>Acc</th><th>Brier</th><th>Speed</th><th>$/1M</th></tr></thead><tbody>'+body+'</tbody></table>'+
       '<p class="disc">'+data.disclaimer+'</p>';
     Array.prototype.forEach.call(el.querySelectorAll('.tab'),function(t){t.onclick=function(){state=t.dataset.l;render();};});
   }
-  fetch(API).then(function(r){return r.json();}).then(function(j){data=j;render();}).catch(function(){render();});
+  data=EMBED; render(); // render embedded snapshot immediately
+  fetch(API).then(function(r){return r.json();}).then(function(j){if(j&&j.lenses){data=j;render();}}).catch(function(){});
+
+  // Live HAL classification count — real count(*) from hal_classifications via /hal/stats.
+  // The animation is only the reveal; it lands on the true value and never exceeds it. Polls so it
+  // ticks up as real fact-checks accrue — a conservative-but-live number, defensible under review.
+  var hn=document.getElementById('halnum');
+  var HALAPI='https://repid-engine-production.up.railway.app/api/v1/hal/stats';
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function commafy(n){return Number(n).toLocaleString('en-US');}
+  function animate(from,to){
+    if(!hn)return;
+    if(reduce||to<=from){hn.textContent=commafy(to);return;}
+    var t0=null,dur=1600;
+    requestAnimationFrame(function step(ts){
+      if(!t0)t0=ts;
+      var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,3);
+      hn.textContent=commafy(Math.round(from+(to-from)*e));
+      if(p<1)requestAnimationFrame(step);
+    });
+  }
+  var halCur=null;
+  function loadHal(){fetch(HALAPI).then(function(r){return r.json();}).then(function(j){
+    var t=j&&j.total_classifications;if(typeof t!=='number')return;
+    if(halCur===null){animate(0,t);}else if(t>halCur){animate(halCur,t);}
+    halCur=t;}).catch(function(){});}
+  loadHal(); setInterval(loadHal,45000);
+
+  // Email capture → public POST /api/v1/subscribe (writes to email_subscribers,
+  // deduped, IP-rate-limited). Honest states, never a raw error.
+  var sf=document.getElementById('subform'),si=document.getElementById('subemail'),sm=document.getElementById('submsg');
+  if(sf){sf.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var email=(si.value||'').trim();
+    if(!email){return;}
+    sm.textContent='Adding you…';
+    fetch('https://repid-engine-production.up.railway.app/api/v1/subscribe',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,source:'hyperdag.org'})
+    }).then(function(r){return r.json().then(function(j){return {ok:r.ok,status:r.status,j:j};});})
+      .then(function(res){
+        if(res.ok){sm.textContent='You’re on the list. Thanks for following the build.';sf.reset();}
+        else if(res.status===409){sm.textContent='You’re already on the list — thanks.';}
+        else if(res.status===429){sm.textContent='Too many tries — give it a minute and try again.';}
+        else{sm.textContent='That didn’t go through. Check the address and try again.';}
+      }).catch(function(){sm.textContent='Couldn’t reach the server — try again in a moment.';});
+  });}
 })();
 </script>
+
 </body>
 </html>
