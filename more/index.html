@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HyperDAG — the fuller picture & glossary</title>
+<meta name="description" content="The longer read: how HyperDAG keeps AI honest, the trust you own, real privacy, and the architecture — in plain language. Honest definitions, not marketing.">
+<style>
+  :root{
+    --bg:#0e1012; --ink:#ecebe6; --soft:#9a958a; --line:#23262b; --card:#16191d;
+    --accent:#3fb8af; --good:#4fb980; --gold:#cda95e;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace; --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  }
+  :root[data-theme="light"]{--bg:#f6f4ef;--ink:#17140f;--soft:#5a5449;--line:#e4dfd3;--card:#fdfcf9;--accent:#0e6f6e;--good:#1e7a46;--gold:#9a7b2e;}
+  @media (prefers-color-scheme:light){:root:not([data-theme]){--bg:#f6f4ef;--ink:#17140f;--soft:#5a5449;--line:#e4dfd3;--card:#fdfcf9;--accent:#0e6f6e;--good:#1e7a46;--gold:#9a7b2e;}}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;text-wrap:balance;line-height:1.14}
+  a{color:var(--accent)}
+  p{max-width:66ch}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+  .back{font-family:var(--mono);font-size:13px;color:var(--soft);text-decoration:none}
+  header{padding:80px 0 34px}
+  header h1{font-size:clamp(31px,5vw,50px);margin:14px 0 18px}
+  header .lede{font-size:clamp(17px,2.2vw,21px);color:var(--soft);margin:0;max-width:52ch}
+  section{padding:44px 0;border-top:1px solid var(--line)}
+  section>.wrap>.eyebrow{margin-bottom:4px}
+  section h2{font-size:clamp(23px,3.2vw,32px);margin:0 0 6px}
+  .sub{color:var(--soft);margin:2px 0 20px;font-size:17px}
+  .jump{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
+  .jump a{font-family:var(--mono);font-size:12.5px;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:7px 12px;color:var(--soft)}
+  .jump a:hover{color:var(--ink);border-color:var(--accent)}
+  .term{padding:20px 0;border-top:1px solid var(--line)}
+  .term:first-of-type{border-top:0}
+  .term h3{font-size:18px;margin:0 0 4px;scroll-margin-top:20px}
+  .term h3 .tag{font-family:var(--mono);font-size:10px;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin-left:8px;font-weight:400}
+  .term p{margin:0;font-size:15.5px;color:var(--ink)}
+  .term small{display:block;margin-top:8px;color:var(--soft);font-size:13.5px;line-height:1.5}
+  footer{padding:48px 0 80px;color:var(--soft);font-size:14px;border-top:1px solid var(--line)}
+  footer .mono{font-family:var(--mono);font-size:12px}
+  .toggle{position:fixed;top:16px;right:16px;background:var(--card);border:1px solid var(--line);color:var(--soft);border-radius:8px;padding:6px 10px;font-family:var(--mono);font-size:12px;cursor:pointer;z-index:10}
+</style>
+</head>
+<body>
+
+<button class="toggle" onclick="var r=document.documentElement,d=r.getAttribute('data-theme')==='light'?'dark':'light';r.setAttribute('data-theme',d)">◐ theme</button>
+
+<header><div class="wrap">
+  <a class="back" href="/">← hyperdag.org</a>
+  <p class="eyebrow" style="margin-top:16px">The fuller picture</p>
+  <h1>The longer read — and the words we use, in plain language.</h1>
+  <p class="lede">The front page is the short version. This is the long one: how we keep AI honest, the trust you own, real privacy, and the architecture underneath. Honest definitions, not marketing — where something is designed but not yet shipped, we say so. Every term has its own anchor, so any page can link straight to it.</p>
+  <div class="jump">
+    <a href="#honest">How we keep AI honest</a>
+    <a href="#own">Trust you own</a>
+    <a href="#privacy">Privacy that's real</a>
+    <a href="#architecture">The architecture</a>
+  </div>
+</div></header>
+
+<section id="honest"><div class="wrap">
+  <p class="eyebrow">Group one</p>
+  <h2>How we keep AI honest.</h2>
+  <p class="sub">The checks that stop a confident-sounding answer from being taken on faith.</p>
+
+  <div class="term"><h3 id="sbfa">SBFA — Stochastic Bias Fracture Array</h3>
+    <p>We never let AI models from the same family check each other's work — same family, same blind spots. So we deliberately spread the work across independent, decorrelated validators, where a bias in one isn't shared by the next. A flaw that would slip past a room of similar models gets caught by one that fails differently.</p>
+    <small>The established idea it names: avoiding "common-mode failure" — engineering's term for when redundant parts all break the same way at the same time, so redundancy buys you nothing.</small></div>
+
+  <div class="term"><h3 id="hal">HAL — Hallucination Assessment Layer</h3>
+    <p>A checkpoint that flags claims an AI can't ground in evidence — before those claims count for anything. If a statement can't be traced back to a verifiable source, HAL marks it rather than letting it pass as fact.</p></div>
+
+  <div class="term"><h3 id="grounding">Grounding</h3>
+    <p>Tying every claim to a verifiable source — the opposite of "just trust me." A grounded answer can show its receipts; an ungrounded one is asking for faith.</p></div>
+
+  <div class="term"><h3 id="drift">Drift</h3>
+    <p>When a model quietly changes behavior over time — answering differently this month than last, without anyone deciding it should. We measure drift so it can't creep in unnoticed; a change you can see is a change you can question.</p></div>
+
+  <div class="term"><h3 id="comma-veto">Comma Veto <span class="tag">Pythagorean comma</span></h3>
+    <p>When validators agree too confidently, that can signal a shared blind spot rather than the truth — so unusually high-confidence agreement can trigger a second look instead of a rubber stamp. Suspiciously perfect consensus is treated as a question, not an answer.</p>
+    <small>Named for the Pythagorean comma (531441 ⁄ 524288 ≈ 1.0136) — the tiny musical dissonance that reveals a scale is subtly out of tune. The small mismatch is the tell.</small></div>
+
+  <div class="term"><h3 id="bft">BFT — Byzantine Fault Tolerance</h3>
+    <p>Reaching the right answer even when some validators are wrong, offline, or actively malicious. Named for the "Byzantine generals" problem in computer science — the classic question of how to agree on a decision when you can't fully trust every participant.</p></div>
+
+  <div class="term"><h3 id="blind-adjudication">Blind adjudication</h3>
+    <p>Validators judge without seeing one another's verdicts — so they can't quietly rubber-stamp the crowd. Each reaches its own conclusion first; agreement means something only because it wasn't copied.</p></div>
+
+  <div class="term"><h3 id="anti-fragile">Anti-fragile</h3>
+    <p>Not merely robust — it gets stronger under attack. Red-teaming hardens it, bad actors get slashed, and stress reveals weaknesses so they can be fixed. Where a fragile system breaks under pressure and a robust one endures, an anti-fragile one improves because of it.</p></div>
+
+  <div class="term"><h3 id="paper-trade">Paper trade / testnet <span class="tag">test tokens</span></h3>
+    <p>Sandbox activity with test tokens on a testnet — the safe place to learn, train, and test your agents before anything real is on the line. No real money is at risk. The behavior is real; the stakes are not, so a mistake here costs nothing but teaches everything.</p></div>
+</div></section>
+
+<section id="own"><div class="wrap">
+  <p class="eyebrow">Group two</p>
+  <h2>Trust you own.</h2>
+  <p class="sub">Reputation and receipts that belong to you — carried, not rented.</p>
+
+  <div class="term"><h3 id="repid">RepID</h3>
+    <p>Reputation earned through honest, verified work — portable and yours. It accrues from what you (or your agent) actually do, and you carry it between apps and contexts instead of rebuilding it inside each walled garden. Not a score handed down by a platform; a credential you earn and hold.</p></div>
+
+  <div class="term"><h3 id="purpose-gate">Purpose Gate <span class="tag">anti-theater</span></h3>
+    <p>Reputation only moves on real deliverables — never for looking busy. Activity that produces nothing of substance doesn't earn (or lose) standing. The gate exists to keep the score honest: it measures work done, not motion made.</p></div>
+
+  <div class="term"><h3 id="staking">Staking <span class="tag">your guardrail</span></h3>
+    <p>Your guardrail. Staking caps an agent's blast radius — the most it can transact on its own — while letting it earn the right to do more. It's never an open checkbook, and never access to your credit card or crypto accounts. Safer and more empowering at once: you set the ceiling, your agent earns the trust to raise it.</p></div>
+
+  <div class="term"><h3 id="authority-ceiling">Authority ceiling</h3>
+    <p>The most an agent can transact on its own — set by your stake and your tier. Raise your stake, raise the ceiling, within an anti-whale curve so it stays fair: more stake buys more room, but with diminishing returns rather than letting the biggest wallet simply run away with it.</p></div>
+
+  <div class="term"><h3 id="provenance">Provenance</h3>
+    <p>The tamper-evident chain of custody — who did what, when, and under whose authority — verifiable end to end. When an agent acts on your behalf, provenance is the record that lets anyone check the trail rather than take it on trust.</p></div>
+
+  <div class="term"><h3 id="glass-box">Glass box (vs black box)</h3>
+    <p>We can't honestly show you why a model thinks what it thinks — no one can. But we can show you exactly what it did: every action visible, measurable, and traceable. That's a glass box against the industry's black box — trust delivered as evidence, not asserted as a claim.</p></div>
+</div></section>
+
+<section id="privacy"><div class="wrap">
+  <p class="eyebrow">Group three</p>
+  <h2>Privacy that's real.</h2>
+  <p class="sub">Prove what's true without handing over what's private.</p>
+
+  <div class="term"><h3 id="zkp">ZKP — Zero-Knowledge Proof</h3>
+    <p>Prove something is true without revealing the data behind it. You can show you're over 18, hold a credential, or are authorized to act — while revealing nothing else: no date of birth, no document, no raw data changing hands, only the proof that the claim holds. It's the cryptography that lets self-sovereignty be real instead of a slogan — verified without being surveilled.</p></div>
+
+  <div class="term"><h3 id="selective-disclosure">Selective disclosure</h3>
+    <p>Share only what you choose — nothing more. Instead of handing over a whole document to prove one fact from it, you reveal exactly the fact that's needed and keep the rest to yourself.</p></div>
+
+  <div class="term"><h3 id="self-sovereign-identity">Self-sovereign identity</h3>
+    <p>You hold the keys — no company or government owns your identity. Your credentials live with you and are presented on your terms, rather than being stored, controlled, and rented back to you by a platform.</p></div>
+
+  <div class="term"><h3 id="nullifier">Nullifier</h3>
+    <p>Proves you're unique or eligible without revealing who you are. It lets a system confirm "this is one distinct, allowed participant — and hasn't already acted" while keeping the person behind it anonymous. The mechanism behind one-person-one-vote or no-double-spend, minus the surveillance.</p></div>
+</div></section>
+
+<section id="architecture"><div class="wrap">
+  <p class="eyebrow">Group four</p>
+  <h2>The architecture.</h2>
+  <p class="sub">The ledger and learning underneath — what makes it fast, verifiable, and shared.</p>
+
+  <div class="term"><h3 id="hyperdag">HyperDAG</h3>
+    <p><b>Hyper</b> (fast) + <b>DAG</b> (Directed Acyclic Graph — a horizontal, parallel ledger) — a hybrid of DAG and blockchain. Like a blockchain, but horizontal and parallel instead of linear and vertical, so many things can settle at once, with a blockchain underneath for final, tamper-proof settlement. Fast where it should be fast; immutable where it must be.</p></div>
+
+  <div class="term"><h3 id="dag-dlt">DAG / DLT</h3>
+    <p>A DAG (Directed Acyclic Graph) is a ledger where transactions run in parallel — a branching web that never loops back on itself — rather than a single linear chain. DLT (Distributed Ledger Technology) is the umbrella term: any shared record kept in sync across many independent computers with no central owner. Blockchain and DAG are both kinds of DLT.</p>
+    <small>Why it matters here: a classic blockchain is linear and vertical, which caps its speed; a DAG is horizontal and parallel, which is what gives autonomous agents the throughput they need.</small></div>
+
+  <div class="term"><h3 id="a2a">A2A / federated learning</h3>
+    <p>Agents learn from each other — A2A is agent-to-agent — and the network's intelligence compounds as they do. In federated learning, that shared learning happens without pooling everyone's raw data in one place, so the value created stays with the people who created it rather than flowing to whoever owns the servers.</p></div>
+
+  <p style="margin-top:26px"><a href="/">← Back to hyperdag.org</a></p>
+</div></section>
+
+<footer><div class="wrap">
+  HyperDAG Protocol · An open movement for self-sovereign trust · For the good of all — the last, the lost, and the least.<br>
+  <span class="mono">"Do justice, love mercy, walk humbly." — Micah 6:8</span>
+</div></footer>
+
+</body>
+</html>
