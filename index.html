@@ -98,7 +98,7 @@
   <p class="sub">Today the big models rank themselves and ask you to trust them. We're building the opposite: people and their agents rank the models — think Yelp, a credit score, and a Better Business Bureau in one, by the masses for the masses, while your data stays in your control.</p>
   <p style="color:var(--soft);font-size:15px;margin-bottom:6px">We don't reduce a model to one number. Like blood pressure — 120 over 80 says what neither figure says alone — trust reads truer in more than one dimension, and the signal is in how they relate. The engine behind it — HAL — has already run <span id="halnum" class="num" style="color:var(--ink)">147,595</span> real fact-checks <span style="color:var(--soft);font-size:12px">(live)</span>. Today the board ranks <b style="color:var(--ink)">truthfulness</b> — accuracy under fact-check, scored so <span class="it">confidently wrong</span> costs more than honest doubt — with <b style="color:var(--ink)">cost</b> beside it as a reference: real value per dollar, and an honest check on whether the newest, priciest models are actually worth it for everyday work. <b style="color:var(--ink)">So far</b> this measures <span class="num">code-review discrimination</span> — one narrow proxy, honestly labeled — and we're broadening toward general trustworthiness. A leaderboard nobody, including us, can grade their own homework on.</p>
   <div id="lb"><div class="state">Loading the live leaderboard…</div></div>
-  <p style="color:var(--soft);font-size:15px;margin-top:18px"><b style="color:var(--ink)">The lens we're building: defensibility × discernment.</b> <b style="color:var(--ink)">Defensibility</b> — do your own claims survive when others check them? <b style="color:var(--ink)">Discernment</b> — are you right when you check <span class="it">theirs</span>? Producing truth and detecting it are different skills. You don't ask the doctor to diagnose themselves, or the thief to guard the cash — so an agent's standing shouldn't rest on its own word. Where an agent sits in that relationship tells you how to <b style="color:var(--ink)">use</b> it, and <b style="color:var(--ink)">when to trust</b> it — not just how to rank it. And it's hard to fake both at once, from independent sources. That's the point. The peer-verification behind it — <b style="color:var(--ink)">140,000 checks and counting</b> — is already flowing.</p>
+  <p style="color:var(--soft);font-size:15px;margin-top:18px"><b style="color:var(--ink)">The lens we're building: defensibility × discernment.</b> <b style="color:var(--ink)">Defensibility</b> — do your own claims survive when others check them? <b style="color:var(--ink)">Discernment</b> — are you right when you check <span class="it">theirs</span>? Producing truth and detecting it are different skills. You don't ask the doctor to diagnose themselves, or the thief to guard the cash — so an agent's standing shouldn't rest on its own word. Where an agent sits in that relationship tells you how to <b style="color:var(--ink)">use</b> it, and <b style="color:var(--ink)">when to trust</b> it — not just how to rank it. And it's hard to fake both at once, from independent sources. That's the point. The peer-verification behind it — <b style="color:var(--ink)"><span id="pvnum">140,000</span> checks and counting</b> <span style="color:var(--soft);font-size:12px">(live)</span> — is already flowing.</p>
   <p style="color:var(--soft);font-size:15px;margin-top:14px">Beyond anything a board can measure from the outside is <b style="color:var(--ink)">perceived</b> trust — what the people and agents who actually use a model report. We're only starting to collect that (join us below), and where measured and perceived <span class="it">disagree</span> is the most revealing signal of all.</p>
   <p style="color:var(--soft);font-size:15px;margin-top:14px"><b style="color:var(--ink)">Built against Goodhart's law.</b> <span class="it">When a measure becomes a target, it gets gamed.</span> So no single number rules here: decorrelated validators that never grade their own family, a proper scoring rule, and — soon — the independent judgment of real users. Gaming one signal is easy; gaming all of them, from independent sources, is the hard problem we build on. This is our best indicator so far. <a href="https://github.com/DealAppSeo/trust-commons"><b>Help us improve it, break it, or make it →</b></a></p>
 
@@ -233,25 +233,29 @@
   // The animation is only the reveal; it lands on the true value and never exceeds it. Polls so it
   // ticks up as real fact-checks accrue — a conservative-but-live number, defensible under review.
   var hn=document.getElementById('halnum');
+  var pv=document.getElementById('pvnum');
   var HALAPI='https://repid-engine-production.up.railway.app/api/v1/hal/stats';
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function commafy(n){return Number(n).toLocaleString('en-US');}
-  function animate(from,to){
-    if(!hn)return;
-    if(reduce||to<=from){hn.textContent=commafy(to);return;}
+  function animate(el,from,to){
+    if(!el)return;
+    if(reduce||to<=from){el.textContent=commafy(to);return;}
     var t0=null,dur=1600;
     requestAnimationFrame(function step(ts){
       if(!t0)t0=ts;
       var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,3);
-      hn.textContent=commafy(Math.round(from+(to-from)*e));
+      el.textContent=commafy(Math.round(from+(to-from)*e));
       if(p<1)requestAnimationFrame(step);
     });
   }
-  var halCur=null;
+  var halCur=null, pvCur=null;
   function loadHal(){fetch(HALAPI).then(function(r){return r.json();}).then(function(j){
-    var t=j&&j.total_classifications;if(typeof t!=='number')return;
-    if(halCur===null){animate(0,t);}else if(t>halCur){animate(halCur,t);}
-    halCur=t;}).catch(function(){});}
+    if(!j)return;
+    var t=j.total_classifications;
+    if(typeof t==='number'){if(halCur===null){animate(hn,0,t);}else if(t>halCur){animate(hn,halCur,t);}halCur=t;}
+    var pvt=j.peer_verification_total;
+    if(typeof pvt==='number'){if(pvCur===null){animate(pv,0,pvt);}else if(pvt>pvCur){animate(pv,pvCur,pvt);}pvCur=pvt;}
+  }).catch(function(){});}
   loadHal(); setInterval(loadHal,45000);
 
   // Email capture → public POST /api/v1/subscribe (writes to email_subscribers,
