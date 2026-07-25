@@ -94,6 +94,28 @@
 
   <div class="term"><h3 id="paper-trade">Paper trade / testnet <span class="tag">test tokens</span></h3>
     <p>Sandbox activity with test tokens on a testnet — the safe place to learn, train, and test your agents before anything real is on the line. No real money is at risk. The behavior is real; the stakes are not, so a mistake here costs nothing but teaches everything.</p></div>
+
+  <div class="term"><h3 id="goodhart">Goodhart's Law</h3>
+    <p>When a measure becomes a target, it stops being a good measure — people optimize the number, not the thing it was meant to track. We build against it: no single score rules, validators can't grade their own family, and gaming one signal doesn't move the others.</p>
+    <small>Named for economist Charles Goodhart; Campbell's Law, the Cobra Effect, and the Lucas Critique are the same trap in other fields.</small></div>
+
+  <div class="term"><h3 id="crag">CRAG — relevance-graded retrieval</h3>
+    <p>Before an AI answers from retrieved sources, we grade whether those sources are actually relevant and sufficient — and re-retrieve or correct when they're not. A confident answer built on the wrong passages gets caught before it's given.</p>
+    <small>CRAG = Corrective Retrieval-Augmented Generation.</small></div>
+
+  <div class="term"><h3 id="decorrelated-validator">Decorrelated validator</h3>
+    <p>A checker chosen precisely because it fails differently from the others — different model family, different training, different blind spots. Correlated validators all miss the same errors; decorrelated ones catch what the rest can't.</p></div>
+
+  <div class="term"><h3 id="rrl">RRL — Response Reputation Layer</h3>
+    <p>A layer that scores each AI response for how trustworthy it turned out to be, and feeds that back — so reliable sources get weighted up and unreliable ones down over time. Reputation attached to answers, not just to accounts.</p></div>
+
+  <div class="term"><h3 id="proof-carrying-retrieval">Proof-carrying retrieval</h3>
+    <p>When an AI pulls a fact from memory, it returns the fact together with a cryptographic proof that the fact really is in the committed record — so you can verify the source wasn't fabricated or altered, without having to trust the retriever.</p>
+    <small>The retrieval carries its own receipt.</small></div>
+
+  <div class="term"><h3 id="prompt-injection">Prompt injection</h3>
+    <p>An attack where hidden instructions buried in a web page, document, or tool result try to hijack an AI into doing something its owner never asked — leaking data, sending money, ignoring its own rules. Treating everything an AI reads as untrusted input is the defense.</p>
+    <small>The AI-era cousin of SQL injection.</small></div>
 </div></section>
 
 <section id="own"><div class="wrap">
@@ -108,7 +130,8 @@
     <p>Reputation only moves on real deliverables — never for looking busy. Activity that produces nothing of substance doesn't earn (or lose) standing. The gate exists to keep the score honest: it measures work done, not motion made.</p></div>
 
   <div class="term"><h3 id="staking">Staking <span class="tag">your guardrail</span></h3>
-    <p>Your guardrail. Staking caps an agent's blast radius — the most it can transact on its own — while letting it earn the right to do more. It's never an open checkbook, and never access to your credit card or crypto accounts. Safer and more empowering at once: you set the ceiling, your agent earns the trust to raise it.</p></div>
+    <p>Your guardrail. Staking caps an agent's blast radius — the most it can transact on its own — while letting it earn the right to do more. It's never an open checkbook, and never access to your credit card or crypto accounts. Safer and more empowering at once: you set the ceiling, your agent earns the trust to raise it.</p>
+    <small>A stake is denominated in USDC (a dollar-pegged stablecoin) or ETH, held on Ethereum / Base — real value you lock as your guardrail, not a fee we take.</small></div>
 
   <div class="term"><h3 id="authority-ceiling">Authority ceiling</h3>
     <p>The most an agent can transact on its own — set by your stake and your tier. Raise your stake, raise the ceiling, within an anti-whale curve so it stays fair: more stake buys more room, but with diminishing returns rather than letting the biggest wallet simply run away with it.</p></div>
@@ -118,6 +141,30 @@
 
   <div class="term"><h3 id="glass-box">Glass box (vs black box)</h3>
     <p>We can't honestly show you why a model thinks what it thinks — no one can. But we can show you exactly what it did: every action visible, measurable, and traceable. That's a glass box against the industry's black box — trust delivered as evidence, not asserted as a claim.</p></div>
+
+  <div class="term"><h3 id="erc-8004">ERC-8004</h3>
+    <p>The emerging on-chain standard for agent reputation — a public registry where an agent's earned trust is recorded on the blockchain, so it's portable and verifiable by anyone, rather than locked inside one company's database.</p>
+    <small>An Ethereum standard (ERC = Ethereum Request for Comments), the same kind of open spec as ERC-20 for tokens.</small></div>
+
+  <div class="term"><h3 id="x402">x402</h3>
+    <p>A payment protocol that lets one agent pay another automatically over the web — reviving the long-dormant HTTP "402 Payment Required" status so machines can settle micro-payments for services without a human at the checkout.</p>
+    <small>Code 402 was reserved in the original web spec for exactly this, decades before agents existed to use it.</small></div>
+
+  <div class="term"><h3 id="portable-trust">Portable earned trust</h3>
+    <p>Reputation you carry across every app and vertical instead of rebuilding it inside each one. Trust earned in one place travels to the next — because it belongs to you, not to the platform that happened to witness it.</p></div>
+
+  <div class="term"><h3 id="bilateral-learning">Bilateral learning loop</h3>
+    <p>Every check scores both sides at once — the one making a claim and the one verifying it. Make a bad claim and get caught, your standing falls; catch a bad claim correctly, yours rises. Because both are scored from a single interaction, gaming both at the same time is hard — which is the whole point.</p></div>
+
+  <div class="term"><h3 id="spectrum-of-autonomy">Spectrum of autonomy</h3>
+    <p>How much an agent may do on its own — from suggest-only, to act-with-your-approval, to fully autonomous within limits. Autonomy isn't all-or-nothing: you grant it in degrees, and an agent earns more room as it proves trustworthy.</p></div>
+
+  <div class="term"><h3 id="wallet">Wallet</h3>
+    <p>Your keychain for the on-chain world — it holds your keys, your identity commitment, and any stake or tokens, and it's how you authorize what your agent may do. Bring one you already have, or create one the safe way as part of signing up.</p></div>
+
+  <div class="term"><h3 id="faucet">Faucet</h3>
+    <p>A free tap that hands out test tokens on a testnet, so you can practice, train agents, and try everything with zero real money at risk before you ever touch the real thing.</p>
+    <small>Called a faucet because the test tokens "drip" out on request.</small></div>
 </div></section>
 
 <section id="privacy"><div class="wrap">
@@ -136,6 +183,10 @@
 
   <div class="term"><h3 id="nullifier">Nullifier</h3>
     <p>Proves you're unique or eligible without revealing who you are. It lets a system confirm "this is one distinct, allowed participant — and hasn't already acted" while keeping the person behind it anonymous. The mechanism behind one-person-one-vote or no-double-spend, minus the surveillance.</p></div>
+
+  <div class="term"><h3 id="homomorphic-encryption">Homomorphic encryption</h3>
+    <p>Computation on data that stays encrypted the whole time — a service can process your information and hand back a correct result without ever being able to see the information itself. Your data stays useful without being exposed.</p>
+    <small>"Homomorphic" means the math done on the encrypted data mirrors the math on the real data, so the answer comes out right.</small></div>
 </div></section>
 
 <section id="architecture"><div class="wrap">
@@ -152,6 +203,31 @@
 
   <div class="term"><h3 id="a2a">A2A / federated learning</h3>
     <p>Agents learn from each other — A2A is agent-to-agent — and the network's intelligence compounds as they do. In federated learning, that shared learning happens without pooling everyone's raw data in one place, so the value created stays with the people who created it rather than flowing to whoever owns the servers.</p></div>
+
+  <div class="term"><h3 id="anfis">ANFIS — the router's learning brain</h3>
+    <p>An Adaptive Neuro-Fuzzy Inference System. It learns, from every past outcome, which validators and models catch which kinds of error — and routes each new job to the ones most likely to get it right per dollar. Fuzzy logic's human-readable rules, tuned by a neural network's learning.</p>
+    <small>Adaptive Neuro-Fuzzy Inference System.</small></div>
+
+  <div class="term"><h3 id="lasso">LASSO — keeps the router focused</h3>
+    <p>A math technique that automatically finds the few signals that actually matter and zeroes out the rest — so the router pays attention to the handful of features that predict a good outcome instead of drowning in noise.</p>
+    <small>Least Absolute Shrinkage and Selection Operator — the "L1" penalty that drives weak features to exactly zero.</small></div>
+
+  <div class="term"><h3 id="moe">MoE — Mixture of Experts</h3>
+    <p>Instead of one giant model doing everything, many specialized ones each handle what they're best at, with a router sending each task to the right expert. The right specialist beats a jack-of-all-trades — cheaper and better at once.</p>
+    <small>Mixture of Experts.</small></div>
+
+  <div class="term"><h3 id="adaptive-rag">Adaptive RAG routing</h3>
+    <p>Deciding, per question, how hard to work: a quick lookup for an easy one, deep multi-source retrieval for a hard one. The system matches its retrieval effort to the difficulty instead of spending the same on every query.</p>
+    <small>RAG = Retrieval-Augmented Generation — letting a model look things up instead of guessing from memory.</small></div>
+
+  <div class="term"><h3 id="durable-dispatcher">Durable dispatcher</h3>
+    <p>The tireless clockwork that keeps the swarm moving — it hands out work, retries what fails, backs off when a provider is rate-limited, and never loses a task even if a worker dies. Persistent by design, so the loop survives restarts and outages.</p></div>
+
+  <div class="term"><h3 id="distributed-fabric">Distributed fabric</h3>
+    <p>The whole ecosystem seen as one woven cloth rather than separate apps — agents, validators, ledgers, and storage spread across many machines with no single owner, all sharing one substrate of trust. The verticals are patterns on the same fabric.</p></div>
+
+  <div class="term"><h3 id="personal-ai-os">Personal AI OS</h3>
+    <p>The long-term shape of it: your own trusted operating system for AI — your agents, your keys, your reputation, your data, under your control — instead of renting slices of someone else's. The phone put a computer in your pocket; this puts a trustworthy AI layer under your name.</p></div>
 
   <p style="margin-top:26px"><a href="/">← Back to hyperdag.org</a></p>
 </div></section>
