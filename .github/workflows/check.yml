@@ -1,0 +1,61 @@
+# Minimal CI for hyperdag-landing.
+#
+# WHY THIS EXISTS. On 2026-08-14 this site was found serving 28,908 bytes that
+# match no revision of index.html in this repository: the live content came
+# from a Vercel Instant Rollback to a pre-git deployment, while the newest
+# production deploy was in state ERROR and had been built from `repid-engine`.
+# The domain returned a healthy 200 throughout, and this repository had no CI,
+# so nothing anywhere reported a problem.
+#
+# This workflow cannot detect that particular failure -- it is a deployment
+# problem, not a source problem, and the fix for it is /api/version plus a
+# repaired git connection. What it CAN do is guarantee that what is in the repo
+# is at least well-formed, so that when the deployment is repaired there is a
+# known-good source to deploy. That is a floor, and this repo had none.
+#
+# Deliberately tiny, because the repo is tiny: a static site plus one Vercel
+# zero-config function. Every step here was executed against this tree before
+# being written.
+
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # The functions under /api are CommonJS -- there is no package.json here,
+      # so a .js file is CJS and ESM syntax would fail at RUNTIME rather than at
+      # deploy time. `node --check` is what turns that into a build-time error.
+      - name: Syntax-check serverless functions
+        run: |
+          shopt -s nullglob
+          files=(api/*.js)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No /api functions found — nothing to check."
+            exit 0
+          fi
+          for f in "${files[@]}"; do
+            echo "node --check $f"
+            node --check "$f"
+          done
+
+      # A zero-length or missing index.html deploys "successfully" and serves a
+      # blank page. Given this repo's history, an empty-but-green deploy is the
+      # specific outcome worth guarding against.
+      - name: index.html is present and non-trivial
+        run: |
+          test -f index.html || { echo "index.html is missing"; exit 1; }
+          bytes=$(wc -c < index.html)
+          echo "index.html is ${bytes} bytes"
+          test "$bytes" -gt 500 || { echo "index.html is implausibly small"; exit 1; }
