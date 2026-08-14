@@ -1,17 +1,26 @@
 // Which commit is this surface actually running?
 //
-// WHY THIS EXISTS, and why here first. On 2026-08-14 an assessment found that
-// hyperdag.org was serving 28,908 bytes that match no revision of index.html in
-// this repository. The live content came from a Vercel Instant Rollback to a
-// deployment made before the project was connected to git, and the newest
-// production deploy was in state ERROR and had been built from `repid-engine` —
-// a different repository entirely. Throughout all of that the domain returned a
-// healthy 200.
+// WHY THIS EXISTS — and the reason is a correction, which makes it stronger.
 //
-// Nothing outside the Vercel dashboard could have detected it, because there was
-// no way to ask the running site what it was. That is the whole cost of not
-// having this endpoint: the site is either up or down, and "up but serving
-// something unreproducible from source" reads as up.
+// An assessment on 2026-08-14 concluded that this site was serving content that
+// existed in no commit, built from the wrong repository, surviving only on a
+// rollback. **That conclusion was wrong and has been retracted.** It failed in
+// two ways at once: it read deployment state off `hyperdag-org`, a Vercel project
+// whose name matches the domain but which serves no custom domain at all (the
+// site is served by `hyperdag-trust`); and its central discrepancy — 28,908 vs
+// 29,093 — compared a character count against a byte count of the same file.
+// Hashing both sides settles it: md5 ff2ef682522185a58e942b1dbd84c6d3, identical.
+//
+// So this endpoint is not here because the deployment was broken. It is here
+// because **two competent attempts to determine what this site was running, from
+// the outside, both got it wrong** — first alarmingly, then only after pulling
+// project metadata, deployment lists and content hashes across two APIs.
+//
+// A version endpoint collapses all of that into one request that the running
+// deployment answers about itself. Inference from the outside is what failed;
+// self-report is what fixes it. "Up" and "up but running something unexpected"
+// are indistinguishable without it, and the cost of guessing wrong is a retracted
+// finding and the work it triggers.
 //
 // This is a static site with no framework and no package.json, so this is a
 // Vercel zero-config Node function (any file under /api at the project root),
@@ -42,9 +51,8 @@ function resolveDeployment() {
 
   // 'unknown' rather than a fake value or a silent omission. A caller comparing
   // this against origin/main must be able to tell "not wired up here" apart from
-  // "running an old commit" — those need different fixes. Given this project's
-  // history, 'unknown' here is itself the signal that the deployment is not
-  // coming from git.
+  // "running an old commit" — those need different fixes, and collapsing them is
+  // how an ambiguous reading becomes a confident wrong one.
   return { commit: 'unknown', platform: 'unknown' };
 }
 

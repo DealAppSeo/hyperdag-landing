@@ -1,17 +1,19 @@
 # Minimal CI for hyperdag-landing.
 #
-# WHY THIS EXISTS. On 2026-08-14 this site was found serving 28,908 bytes that
-# match no revision of index.html in this repository: the live content came
-# from a Vercel Instant Rollback to a pre-git deployment, while the newest
-# production deploy was in state ERROR and had been built from `repid-engine`.
-# The domain returned a healthy 200 throughout, and this repository had no CI,
-# so nothing anywhere reported a problem.
+# WHY THIS EXISTS. This repository had no CI at all -- no gate of any kind ran
+# on a push or a pull request.
 #
-# This workflow cannot detect that particular failure -- it is a deployment
-# problem, not a source problem, and the fix for it is /api/version plus a
-# repaired git connection. What it CAN do is guarantee that what is in the repo
-# is at least well-formed, so that when the deployment is repaired there is a
-# known-good source to deploy. That is a floor, and this repo had none.
+# An assessment on 2026-08-14 initially reported this site as serving content
+# from no commit, built from the wrong repository. **That was retracted**: it
+# read deployment state off `hyperdag-org` (a project that serves no custom
+# domain -- the site is served by `hyperdag-trust`), and compared a character
+# count against a byte count of the same file. The live page is md5-identical to
+# the committed index.html, and the production deploy is READY at main HEAD.
+#
+# The deployment was healthy. The absence of CI was not, and remains the real
+# finding: nothing here verified that a change was even well-formed before it
+# went out. This workflow is that floor -- deliberately small, because the repo
+# is a static page plus one Vercel zero-config function.
 #
 # Deliberately tiny, because the repo is tiny: a static site plus one Vercel
 # zero-config function. Every step here was executed against this tree before
@@ -51,8 +53,9 @@ jobs:
           done
 
       # A zero-length or missing index.html deploys "successfully" and serves a
-      # blank page. Given this repo's history, an empty-but-green deploy is the
-      # specific outcome worth guarding against.
+      # blank page -- an empty-but-green deploy. This is not hypothetical here:
+      # commit b7274ba deleted index.html outright, and nothing in this repo
+      # would have objected.
       - name: index.html is present and non-trivial
         run: |
           test -f index.html || { echo "index.html is missing"; exit 1; }
